@@ -8,7 +8,6 @@ import com.phystech.weatherapp.internal.lazyDeferred
 
 class CurrentWeatherViewModel(
         private val forecastRepository: ForecastRepository
-
 ) : ViewModel() {
     val weather by lazyDeferred {
         forecastRepository.getCurrentWeather()

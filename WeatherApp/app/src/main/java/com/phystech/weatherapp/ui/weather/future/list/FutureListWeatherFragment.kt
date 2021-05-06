@@ -2,6 +2,7 @@ package com.phystech.weatherapp.ui.weather.future.list
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.phystech.weatherapp.data.network.response.Lists
 import com.phystech.weatherapp.databinding.FutureListWeatherFragmentBinding
 import com.phystech.weatherapp.ui.base.ScopeFragment
@@ -27,6 +29,7 @@ class FutureListWeatherFragment : ScopeFragment(),KodeinAware {
     override val kodein: Kodein by kodein()
     private val viewModelFactory : FutureListWeatherViewModelFactory by instance()
 
+    private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel : FutureListWeatherViewModel
 
 
@@ -40,6 +43,7 @@ class FutureListWeatherFragment : ScopeFragment(),KodeinAware {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FutureListWeatherFragmentBinding.inflate(layoutInflater, container, false)
+        recyclerView = binding.recyclerView
         return binding.root
     }
 
@@ -60,14 +64,19 @@ class FutureListWeatherFragment : ScopeFragment(),KodeinAware {
         })
 
         futureWeatherEntry.observe(viewLifecycleOwner, Observer { weatherEntry ->
+
             if(weatherEntry == null) return@Observer
 
             binding.groupLoadingFuture.visibility = View.GONE
 
             updateDateToNextWeek()
 
+            recyclerView.also {
+                it.layoutManager = LinearLayoutManager(requireContext())
+                it.adapter = FutureWeatherAdapter(weatherEntry.list)
 
-            initRecyclerView(weatherEntry.list.toFutureWeatherItems())
+            }
+
         })
 
     }
@@ -84,18 +93,6 @@ class FutureListWeatherFragment : ScopeFragment(),KodeinAware {
 
     private fun updateDateToNextWeek() {
         (activity as? AppCompatActivity)?.supportActionBar?.subtitle = "Next Week"
-    }
-
-    private fun initRecyclerView(items : List<FutureWeatherItem>) {
-        val groupAdapter = GroupAdapter<ViewHolder>().apply {
-            addAll(items)
-        }
-
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@FutureListWeatherFragment.context)
-            adapter = groupAdapter
-        }
-
     }
 
 }

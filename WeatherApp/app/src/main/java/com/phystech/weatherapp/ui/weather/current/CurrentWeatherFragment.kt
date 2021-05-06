@@ -12,11 +12,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
+import com.bumptech.glide.Glide
 import com.phystech.weatherapp.data.network.ConnectivityInterceptorImpl
 import com.phystech.weatherapp.data.network.WeatherApiService
 import com.phystech.weatherapp.data.network.WeatherNetworkDataSourceImpl
 import com.phystech.weatherapp.databinding.CurrentWeatherFragmentBinding
-import com.phystech.weatherapp.internal.glide.GlideApp
 import com.phystech.weatherapp.provider.PreferenceProvider
 import com.phystech.weatherapp.ui.base.ScopeFragment
 import kotlinx.coroutines.Dispatchers
@@ -90,7 +90,7 @@ class CurrentWeatherFragment : ScopeFragment(), KodeinAware{
 
             Log.d(TAG, it.weatherIcons[0])
 
-            GlideApp.with(this@CurrentWeatherFragment)
+            Glide.with(this@CurrentWeatherFragment)
                     .load(it.weatherIcons[0])
                     .into(binding.weatherImageIcon)
         })
@@ -107,7 +107,6 @@ class CurrentWeatherFragment : ScopeFragment(), KodeinAware{
         updateVisibility(visibilityDistance)
         updateWind(windDirection, windSpeed)
         updateToToday()
-
 
     }
 

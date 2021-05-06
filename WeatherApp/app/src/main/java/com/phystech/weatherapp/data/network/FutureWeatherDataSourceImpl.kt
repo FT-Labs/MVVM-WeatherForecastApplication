@@ -20,9 +20,15 @@ class FutureWeatherDataSourceImpl(
 
     override suspend fun fetchFutureWeather(location: String) {
         try {
-            val fetchedFutureWeather = futureWeatherApiService
+            var fetchedFutureWeather = futureWeatherApiService
                     .getFutureWeather(location)
                     .await()
+            if(fetchedFutureWeather.cod == "404")
+            {
+                fetchedFutureWeather = futureWeatherApiService
+                    .getFutureWeather("Istanbul")
+                    .await()
+            }
             _downloadedCurrentWeather.postValue(fetchedFutureWeather)
         }
         catch (e : NoConnectivityException)

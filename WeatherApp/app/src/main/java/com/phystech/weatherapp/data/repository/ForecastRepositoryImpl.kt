@@ -90,9 +90,15 @@ class ForecastRepositoryImpl(
                 Locale.getDefault().language
         )
 
-        futureWeatherDataSource.fetchFutureWeather(
+        try {
+            futureWeatherDataSource.fetchFutureWeather(
                 locationProvider.getPreferredLocationString()
-        )
+            )
+        }
+        catch (e : Exception)
+        {
+            Log.d("BURADAYIM","BUGLAR OLUSTU ${locationProvider.getPreferredLocationString()}")
+        }
 
     }
 

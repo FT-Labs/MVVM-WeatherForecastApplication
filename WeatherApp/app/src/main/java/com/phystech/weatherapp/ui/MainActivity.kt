@@ -63,12 +63,14 @@ class MainActivity : AppCompatActivity(), KodeinAware{
         binding.bottomNav.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
-        requestLocationPermission()
 
-        if (hasLocationPermission())
+        if (hasLocationPermission()) {
             bindLocationManager()
-        else
+        }
+        else {
             requestLocationPermission()
+        }
+
     }
 
 
